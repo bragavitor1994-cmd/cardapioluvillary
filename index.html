@@ -1,0 +1,501 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cardápio Lu'Villary</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700;6..12,800&display=swap">
+<style>
+/* Layout: capa com foto em parallax + selo do logo com vapor animado, barra de seções fixa, coluna única de até 720px; destaques com fotos reais, listas com miniaturas ilustrativas; itens entram suavemente ao rolar. Visual único (claro e quente), cores tiradas do logo. */
+:root{
+  --laranja:#C2570F;
+  --laranja-escuro:#9A4209;
+  --verde:#2E7533;
+  --verde-escuro:#1F5A25;
+  --creme:#FBF5EA;
+  --papel:#FFFDF8;
+  --dourado:#D8BE82;
+  --tinta:#2B1D12;
+  --tinta-suave:#6E5A49;
+  --linha:#E8DCC6;
+  --display:"Playfair Display", Georgia, "Times New Roman", serif;
+  --texto:"Nunito Sans", "Segoe UI", Roboto, Arial, sans-serif;
+  --ease:cubic-bezier(.2,.7,.2,1);
+  color-scheme: light;
+}
+*{box-sizing:border-box}
+img{max-width:100%}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--creme);color:var(--tinta);font-family:var(--texto);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--laranja)}
+
+/* ---------- Capa ---------- */
+.capa{position:relative;color:#fff;background:var(--tinta);overflow:hidden}
+.capa img.fundo{position:absolute;left:0;top:-10%;width:100%;height:120%;object-fit:cover;opacity:.55;will-change:transform}
+.capa::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(43,29,18,.25) 0%,rgba(43,29,18,.55) 55%,var(--creme) 100%)}
+.capa-inner{position:relative;z-index:1;max-width:720px;margin:0 auto;padding-block:40px 34px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;align-items:center;text-align:center;gap:14px;will-change:transform,opacity}
+.selo-box{position:relative;width:148px;height:148px;animation:entra-selo .9s var(--ease) both}
+.selo{width:148px;height:148px;border-radius:50%;object-fit:cover;border:4px solid #fff;box-shadow:0 10px 30px rgba(0,0,0,.35);background:#fff;display:block}
+.vapor{position:absolute;left:50%;top:-46px;width:90px;height:60px;transform:translateX(-50%);overflow:visible;pointer-events:none}
+.vapor path{fill:none;stroke:#FFF3DC;stroke-width:3;stroke-linecap:round;opacity:0;animation:vapor 3.6s ease-in-out infinite}
+.vapor path:nth-child(2){animation-delay:1.2s}
+.vapor path:nth-child(3){animation-delay:2.4s}
+.capa h1{margin:0;font-family:var(--display);font-weight:800;font-size:clamp(30px,8vw,42px);line-height:1.05;letter-spacing:.01em;text-shadow:0 2px 12px rgba(0,0,0,.45);text-wrap:balance;animation:sobe .8s .15s var(--ease) both}
+.capa p{margin:0;font-size:15px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#FFF3DC;text-shadow:0 1px 8px rgba(0,0,0,.5);animation:sobe .8s .3s var(--ease) both}
+@keyframes entra-selo{from{transform:scale(.6) rotate(-12deg);opacity:0}to{transform:none;opacity:1}}
+@keyframes sobe{from{transform:translateY(16px);opacity:0}to{transform:none;opacity:1}}
+@keyframes vapor{0%{opacity:0;transform:translateY(14px)}30%{opacity:.85}100%{opacity:0;transform:translateY(-16px)}}
+
+/* ---------- Barra de seções ---------- */
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--laranja);box-shadow:0 4px 14px rgba(154,66,9,.25)}
+.nav-trilho{position:relative;max-width:720px;margin:0 auto;display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding-block:10px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.nav-trilho::-webkit-scrollbar{display:none}
+.nav a{position:relative;z-index:1;flex:0 0 auto;text-decoration:none;color:#FFF3DC;font-weight:700;font-size:14px;padding:8px 14px;border-radius:999px;border:1.5px solid rgba(255,243,220,.45);white-space:nowrap;transition:color .3s,border-color .3s}
+.nav a:hover{border-color:#FFF3DC}
+.nav a.ativo{color:var(--laranja-escuro);border-color:transparent}
+.nav a:focus-visible{outline:3px solid var(--dourado);outline-offset:2px}
+.pilula{position:absolute;z-index:0;top:10px;left:0;height:0;width:0;border-radius:999px;background:var(--papel);transition:transform .45s var(--ease),width .45s var(--ease)}
+
+/* ---------- Conteúdo ---------- */
+main{max-width:720px;margin:0 auto;padding-block:8px 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:40px}
+.aviso{margin:14px 0 -20px;font-size:13px;color:var(--tinta-suave);text-align:center}
+section{scroll-margin-top:calc(env(safe-area-inset-top,0px) + 70px);display:flex;flex-direction:column;gap:18px}
+.sec-cab{display:flex;align-items:center;gap:12px;padding-top:16px}
+.sec-cab h2{margin:0;font-family:var(--display);font-weight:800;font-size:28px;line-height:1.1;color:var(--laranja-escuro)}
+.sec-cab::after{content:"";flex:1;height:2px;background:repeating-linear-gradient(90deg,var(--dourado) 0 8px,transparent 8px 14px);transform-origin:left;transition:transform .9s .15s var(--ease)}
+.sec-cab.pre::after{transform:scaleX(0)}
+.sec-nota{margin:-8px 0 0;color:var(--tinta-suave);font-size:14px}
+
+/* Destaques com foto real */
+.destaques{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
+.prato{background:var(--papel);border-radius:14px;overflow:hidden;box-shadow:0 6px 18px rgba(43,29,18,.10);display:flex;flex-direction:column}
+.foto{overflow:hidden}
+.foto img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;transition:transform 1.4s var(--ease)}
+.pre .foto img,.foto.pre img{transform:scale(1.12)}
+.prato-info{padding:12px 14px 14px;display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.prato-info h3{margin:0;font-size:17px;font-weight:800;line-height:1.25;min-width:0}
+.preco{font-weight:800;color:var(--verde);white-space:nowrap;font-variant-numeric:tabular-nums}
+.preco small{font-size:.72em;font-weight:700;margin-right:2px}
+.selo-casa{position:absolute;top:10px;left:10px;background:var(--verde);color:#fff;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:4px 9px;border-radius:999px}
+.foto{position:relative}
+
+/* Destaque grande */
+.grande{background:var(--papel);border-radius:16px;overflow:hidden;box-shadow:0 6px 18px rgba(43,29,18,.10);display:grid;grid-template-columns:1fr}
+.grande .foto img{aspect-ratio:16/10}
+.grande-corpo{padding:16px 18px 18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.grande-topo{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.grande-topo h3{margin:0;font-family:var(--display);font-size:22px;line-height:1.15}
+.grande-topo .preco{font-size:20px}
+@media (min-width:600px){
+  .grande{grid-template-columns:44% 1fr}
+  .grande .foto img{aspect-ratio:auto;height:100%;min-height:240px}
+}
+.rotulo{font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--tinta-suave);margin:0}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none}
+.chips li{background:#EEF4EA;color:var(--verde-escuro);font-weight:700;font-size:14px;padding:6px 12px;border-radius:999px}
+.acomp{margin:0;font-size:14px;color:var(--tinta-suave)}
+.acomp strong{color:var(--tinta)}
+
+/* Lista de preços com miniaturas */
+.lista{list-style:none;margin:0;padding:4px 14px;background:var(--papel);border-radius:14px;border:1px solid var(--linha)}
+.lista li{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--linha)}
+.lista li:last-child{border-bottom:0}
+.mini{flex:0 0 64px;width:64px;height:64px;border-radius:12px;object-fit:cover;background:var(--linha)}
+.mini.casa{object-fit:contain;background:var(--papel);border:1px solid var(--linha);padding:6px;border-radius:50%}
+.lista .linha{flex:1;min-width:0;display:flex;align-items:baseline;gap:8px}
+.lista .nome{min-width:0;font-weight:600}
+.lista .nome em{display:block;font-style:normal;font-weight:400;font-size:13px;color:var(--tinta-suave)}
+.lista .pont{flex:1;border-bottom:2px dotted var(--dourado);transform:translateY(-4px);min-width:16px}
+.lista.simples li{padding:11px 0}
+.subgrupo{margin:6px 0 -8px;font-size:13px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--verde)}
+
+/* Faixa com foto (bebidas) */
+.faixa{position:relative;border-radius:14px;overflow:hidden;height:120px}
+.faixa img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 1.4s var(--ease)}
+.faixa.pre img{transform:scale(1.12)}
+.faixa span{position:absolute;left:14px;bottom:12px;color:#fff;font-family:var(--display);font-size:22px;font-weight:800;text-shadow:0 2px 10px rgba(0,0,0,.6)}
+.tag{position:absolute;right:8px;top:8px;background:rgba(43,29,18,.62);color:#FFF3DC;font-size:10px;font-weight:700;letter-spacing:.06em;padding:3px 7px;border-radius:999px}
+
+/* Sucos */
+.sabores{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.sabor{position:relative;border-radius:12px;overflow:hidden;background:var(--papel);box-shadow:0 4px 12px rgba(43,29,18,.08)}
+.sabor img{display:block;width:100%;aspect-ratio:1;object-fit:cover}
+.sabor b{display:block;padding:8px 10px;font-size:14px;text-align:center}
+.sucos{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.tam{background:var(--verde);color:#fff;border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:4px}
+.tam span{font-size:14px;opacity:.9}
+.tam strong{font-family:var(--display);font-size:26px;font-variant-numeric:tabular-nums}
+.tam strong small{font-family:var(--texto);font-size:14px;margin-right:3px}
+
+/* Entrada ao rolar */
+.anim{transition:opacity .7s var(--ease),transform .7s var(--ease);transition-delay:var(--d,0s)}
+.anim.pre{opacity:0;transform:translateY(26px)}
+.lista li.anim.pre{transform:translateX(-18px)}
+
+/* Onde estamos */
+.contatos{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.contato{background:var(--papel);border:1px solid var(--linha);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.contato h3{margin:0;font-size:13px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--verde)}
+.contato p{margin:0;font-weight:600;user-select:all;overflow-wrap:anywhere}
+.contato p.sub{font-weight:400;font-size:14px;color:var(--tinta-suave);user-select:auto}
+.botao{align-self:flex-start;margin-top:4px;display:inline-flex;align-items:center;gap:8px;text-decoration:none;font-weight:800;font-size:14px;color:#fff;background:var(--laranja);padding:9px 16px;border-radius:999px;transition:background .2s}
+.botao:hover{background:var(--laranja-escuro)}
+.botao.verde{background:var(--verde)}
+.botao.verde:hover{background:var(--verde-escuro)}
+.botao:focus-visible,.fab:focus-visible{outline:3px solid var(--dourado);outline-offset:2px}
+.botao svg{width:18px;height:18px;flex:0 0 auto}
+
+/* Botão flutuante do WhatsApp */
+.fab{position:fixed;z-index:8;right:calc(16px + env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));display:inline-flex;align-items:center;gap:8px;text-decoration:none;color:#fff;background:var(--verde);font-weight:800;font-size:15px;padding:12px 18px 12px 14px;border-radius:999px;box-shadow:0 8px 24px rgba(31,90,37,.45);transition:transform .35s var(--ease),opacity .35s;animation:fab-entra .6s 1s var(--ease) both}
+.fab svg{width:24px;height:24px}
+.fab:hover{background:var(--verde-escuro)}
+.fab.oculto{transform:translateY(140%);opacity:0;pointer-events:none}
+@keyframes fab-entra{from{transform:translateY(140%)}to{transform:none}}
+
+footer{background:var(--verde-escuro);color:#EAF1E6;text-align:center;font-size:14px}
+footer .rod{max-width:720px;margin:0 auto;padding-block:28px calc(96px + env(safe-area-inset-bottom,0px));padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:14px}
+footer strong{font-family:var(--display);font-size:18px;display:block;color:#fff;margin-bottom:4px}
+footer details{text-align:left;font-size:12px;color:#CFE0C9}
+footer summary{cursor:pointer;text-align:center;font-weight:700}
+footer details p{margin:10px 0 6px}
+footer ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:3px;overflow-wrap:anywhere}
+footer a{color:#EAF1E6}
+
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .anim.pre{opacity:1;transform:none}
+  .vapor{display:none}
+}
+</style>
+
+<header class="capa">
+  <img class="fundo" id="fundo" src="img/feijoada.jpg" alt="">
+  <div class="capa-inner" id="capa-inner">
+    <div class="selo-box">
+      <svg class="vapor" viewBox="0 0 90 60" aria-hidden="true">
+        <path d="M30 58 C22 46 38 38 30 26 C24 16 34 10 30 2"/>
+        <path d="M45 58 C37 46 53 38 45 26 C39 16 49 10 45 2"/>
+        <path d="M60 58 C52 46 68 38 60 26 C54 16 64 10 60 2"/>
+      </svg>
+      <img class="selo" src="img/logo.jpg" alt="Logo Lu'Villary Sabores">
+    </div>
+    <h1>Lu'Villary Sabores</h1>
+    <p>Comida caseira · porções · café</p>
+  </div>
+</header>
+
+<nav class="nav" aria-label="Seções do cardápio">
+  <div class="nav-trilho" id="trilho">
+    <span class="pilula" id="pilula" aria-hidden="true"></span>
+    <a href="#porcoes">Porções</a>
+    <a href="#prato-feito">Prato feito</a>
+    <a href="#macarrao">Macarrão</a>
+    <a href="#panqueca">Panqueca</a>
+    <a href="#cafe">Café e lanches</a>
+    <a href="#sucos">Sucos</a>
+    <a href="#doces">Doces</a>
+    <a href="#bebidas">Bebidas</a>
+    <a href="#contato">Onde estamos</a>
+  </div>
+</nav>
+
+<main>
+  <p class="aviso">Fotos grandes com o selo <b>da casa</b> são dos nossos pratos. As demais são ilustrativas.</p>
+
+  <section id="porcoes">
+    <div class="sec-cab anim"><h2>Porções</h2></div>
+    <div class="destaques">
+      <article class="prato anim"><div class="foto"><img src="img/panceta.jpg" alt="Panceta no copo com limão" loading="lazy"><span class="selo-casa">da casa</span></div><div class="prato-info"><h3>Panceta no copo</h3><span class="preco"><small>R$</small>25</span></div></article>
+      <article class="prato anim"><div class="foto"><img src="img/croquete.jpg" alt="Bolinhos de cambotiá com carne seca, maionese e pimenta" loading="lazy"><span class="selo-casa">da casa</span></div><div class="prato-info"><h3>Cambotiá com carne seca</h3><span class="preco"><small>R$</small>50</span></div></article>
+      <article class="prato anim"><div class="foto"><img src="img/moela.jpg" alt="Moela ao molho com torradas" loading="lazy"><span class="selo-casa">da casa</span></div><div class="prato-info"><h3>Moela com torradas</h3><span class="preco"><small>R$</small>40</span></div></article>
+    </div>
+    <ul class="lista">
+      <li class="anim"><img class="mini" src="img/ilustrativas/panceta-prato.jpg" alt="" loading="lazy"><div class="linha"><span class="nome">Panceta no prato</span><span class="pont"></span><span class="preco"><small>R$</small>50</span></div></li>
+      <li class="anim"><img class="mini" src="img/ilustrativas/contra-file.jpg" alt="" loading="lazy"><div class="linha"><span class="nome">Contra filé<em>com mandioca na manteiga ou pão</em></span><span class="pont"></span><span class="preco"><small>R$</small>65</span></div></li>
+      <li class="anim"><img class="mini" src="img/ilustrativas/tilapia.jpg" alt="" loading="lazy"><div class="linha"><span class="nome">Filé de tilápia</span><span class="pont"></span><span class="preco"><small>R$</small>60</span></div></li>
+      <li class="anim"><img class="mini" src="img/ilustrativas/bacalhau.jpg" alt="" loading="lazy"><div class="linha"><span class="nome">Bolinho de bacalhau</span><span class="pont"></span><span class="preco"><small>R$</small>50</span></div></li>
+      <li class="anim"><img class="mini" src="img/ilustrativas/passarinho.jpg" alt="" loading="lazy"><div class="linha"><span class="nome">Frango à passarinho</span><span class="pont"></span><span class="preco"><small>R$</small>45</span></div></li>
+      <li class="anim"><img class="mini" src="img/ilustrativas/iscas-frango.jpg" alt="" loading="lazy"><div class="linha"><span class="nome">Iscas de frango</span><span class="pont"></span><span class="preco"><small>R$</small>40</span></div></li>
+      <li class="anim"><img class="mini" src="img/ilustrativas/batata-recheada.jpg" alt="" loading="lazy"><div class="linha"><span class="nome">Batata recheada</span><span class="pont"></span><span class="preco"><small>R$</small>35</span></div></li>
+      <li class="anim"><img class="mini" src="img/ilustrativas/calabresa.jpg" alt="" loading="lazy"><div class="linha"><span class="nome">Calabresa com torradas</span><span class="pont"></span><span class="preco"><small>R$</small>35</span></div></li>
+      <li class="anim"><img class="mini" src="img/ilustrativas/croquete.jpg" alt="" loading="lazy"><div class="linha"><span class="nome">Croquete</span><span class="pont"></span><span class="preco"><small>R$</small>35</span></div></li>
+      <li class="anim"><img class="mini" src="img/ilustrativas/mandioca.jpg" alt="" loading="lazy"><div class="linha"><span class="nome">Mandioca</span><span class="pont"></span><span class="preco"><small>R$</small>30</span></div></li>
+      <li class="anim"><img class="mini" src="img/ilustrativas/polenta.jpg" alt="" loading="lazy"><div class="linha"><span class="nome">Polenta</span><span class="pont"></span><span class="preco"><small>R$</small>30</span></div></li>
+      <li class="anim"><img class="mini" src="img/ilustrativas/batata.jpg" alt="" loading="lazy"><div class="linha"><span class="nome">Batata simples</span><span class="pont"></span><span class="preco"><small>R$</small>30</span></div></li>
+      <li class="anim"><img class="mini" src="img/ilustrativas/salgadinhos.jpg" alt="" loading="lazy"><div class="linha"><span class="nome">Salgadinhos variados<em>20 unidades</em></span><span class="pont"></span><span class="preco"><small>R$</small>25</span></div></li>
+    </ul>
+  </section>
+
+  <section id="prato-feito">
+    <div class="sec-cab anim"><h2>Prato feito</h2></div>
+    <article class="grande anim">
+      <div class="foto"><img src="img/parmegiana.jpg" alt="Prato feito com parmegiana de frango, arroz, batata frita, salada e feijão" loading="lazy"><span class="selo-casa">da casa</span></div>
+      <div class="grande-corpo">
+        <div class="grande-topo"><h3>Prato feito</h3><span class="preco"><small>R$</small>30</span></div>
+        <p class="rotulo">Escolha a mistura</p>
+        <ul class="chips"><li>Contra filé</li><li>Parmegiana de frango</li><li>Frango à passarinho</li></ul>
+        <p class="acomp"><strong>Acompanha:</strong> arroz, feijão, batata e salada.</p>
+      </div>
+    </article>
+  </section>
+
+  <section id="macarrao">
+    <div class="sec-cab anim"><h2>Macarrão na chapa</h2></div>
+    <article class="grande anim">
+      <div class="foto"><img src="img/macarrao.jpg" alt="Macarrão ao molho branco com frango empanado e bacon" loading="lazy"><span class="selo-casa">da casa</span></div>
+      <div class="grande-corpo">
+        <div class="grande-topo"><h3>Monte o seu</h3></div>
+        <ul class="lista simples">
+          <li><div class="linha"><span class="nome">300 g</span><span class="pont"></span><span class="preco"><small>R$</small>25</span></div></li>
+          <li><div class="linha"><span class="nome">500 g</span><span class="pont"></span><span class="preco"><small>R$</small>30</span></div></li>
+        </ul>
+        <p class="acomp"><strong>Escolha 4 adicionais</strong> para colocar no seu macarrão.</p>
+      </div>
+    </article>
+  </section>
+
+  <section id="panqueca">
+    <div class="sec-cab anim"><h2>Panqueca</h2></div>
+    <article class="grande anim">
+      <div class="foto"><img src="img/panqueca.jpg" alt="Panquecas gratinadas com molho de tomate" loading="lazy"><span class="selo-casa">da casa</span></div>
+      <div class="grande-corpo">
+        <div class="grande-topo"><h3>Bandeja com 2 panquecas</h3><span class="preco"><small>R$</small>20</span></div>
+        <p class="rotulo">Sabores</p>
+        <ul class="chips"><li>Carne</li><li>Frango</li></ul>
+      </div>
+    </article>
+  </section>
+
+  <section id="cafe">
+    <div class="sec-cab anim"><h2>Café e lanches</h2></div>
+    <article class="grande anim">
+      <div class="foto"><img src="img/lanche.jpg" alt="Lanche natural com suco de laranja" loading="lazy"><span class="selo-casa">da casa</span></div>
+      <div class="grande-corpo">
+        <div class="grande-topo"><h3>Lanche natural</h3><span class="preco"><small>R$</small>16</span></div>
+        <p class="acomp">Combina com um suco natural. Veja os sabores em Sucos.</p>
+      </div>
+    </article>
+    <p class="subgrupo anim">Para beber</p>
+    <ul class="lista">
+      <li class="anim"><img class="mini" src="img/ilustrativas/cafe-coado.jpg" alt="" loading="lazy"><div class="linha"><span class="nome">Café coado</span><span class="pont"></span><span class="preco"><small>R$</small>4</span></div></li>
+      <li class="anim"><img class="mini" src="img/ilustrativas/cafe-leite.jpg" alt="" loading="lazy"><div class="linha"><span class="nome">Café com leite</span><span class="pont"></span><span class="preco"><small>R$</small>8</span></div></li>
+      <li class="anim"><img class="mini" src="img/ilustrativas/achocolatado.jpg" alt="" loading="lazy"><div class="linha"><span class="nome">Leite com achocolatado</span><span class="pont"></span><span class="preco"><small>R$</small>8</span></div></li>
+    </ul>
+    <p class="subgrupo anim">Na chapa e salgados</p>
+    <ul class="lista">
+      <li class="anim"><img class="mini" src="img/ilustrativas/pao-queijo.jpg" alt="" loading="lazy"><div class="linha"><span class="nome">Pão de queijo</span><span class="pont"></span><span class="preco"><small>R$</small>5</span></div></li>
+      <li class="anim"><img class="mini" src="img/ilustrativas/pao-manteiga.jpg" alt="" loading="lazy"><div class="linha"><span class="nome">Pão com manteiga na chapa</span><span class="pont"></span><span class="preco"><small>R$</small>6</span></div></li>
+      <li class="anim"><img class="mini" src="img/ilustrativas/misto.jpg" alt="" loading="lazy"><div class="linha"><span class="nome">Pão com presunto e queijo na chapa</span><span class="pont"></span><span class="preco"><small>R$</small>10</span></div></li>
+      <li class="anim"><img class="mini" src="img/ilustrativas/misto-ovo.jpg" alt="" loading="lazy"><div class="linha"><span class="nome">Pão com presunto, queijo e ovo</span><span class="pont"></span><span class="preco"><small>R$</small>15</span></div></li>
+      <li class="anim"><img class="mini" src="img/ilustrativas/requeijao.jpg" alt="" loading="lazy"><div class="linha"><span class="nome">Pão com requeijão e muçarela na chapa</span><span class="pont"></span><span class="preco"><small>R$</small>15</span></div></li>
+      <li class="anim"><img class="mini" src="img/ilustrativas/salgado-frito.jpg" alt="" loading="lazy"><div class="linha"><span class="nome">Salgado frito</span><span class="pont"></span><span class="preco"><small>R$</small>10</span></div></li>
+      <li class="anim"><img class="mini" src="img/ilustrativas/salgado-assado.jpg" alt="" loading="lazy"><div class="linha"><span class="nome">Salgado assado</span><span class="pont"></span><span class="preco"><small>R$</small>12</span></div></li>
+    </ul>
+  </section>
+
+  <section id="sucos">
+    <div class="sec-cab anim"><h2>Sucos</h2></div>
+    <div class="sabores">
+      <div class="sabor anim"><img src="img/ilustrativas/suco-laranja.jpg" alt="" loading="lazy"><span class="tag">ilustrativa</span><b>Laranja</b></div>
+      <div class="sabor anim"><img src="img/ilustrativas/suco-morango.jpg" alt="" loading="lazy"><span class="tag">ilustrativa</span><b>Morango</b></div>
+      <div class="sabor anim"><img src="img/ilustrativas/suco-abacaxi.jpg" alt="" loading="lazy"><span class="tag">ilustrativa</span><b>Abacaxi</b></div>
+    </div>
+    <div class="sucos">
+      <div class="tam anim"><span>Copo 400 ml</span><strong><small>R$</small>10</strong></div>
+      <div class="tam anim"><span>Garrafinha 500 ml</span><strong><small>R$</small>12</strong></div>
+    </div>
+  </section>
+
+  <section id="doces">
+    <div class="sec-cab anim"><h2>Doces</h2></div>
+    <ul class="lista">
+      <li class="anim"><img class="mini" src="img/ilustrativas/bolo-pote.jpg" alt="" loading="lazy"><div class="linha"><span class="nome">Bolo no pote</span><span class="pont"></span><span class="preco"><small>R$</small>16</span></div></li>
+      <li class="anim"><img class="mini" src="img/ilustrativas/pudim.jpg" alt="" loading="lazy"><div class="linha"><span class="nome">Pudim</span><span class="pont"></span><span class="preco"><small>R$</small>12</span></div></li>
+      <li class="anim"><img class="mini" src="img/ilustrativas/bolo-gelado.jpg" alt="" loading="lazy"><div class="linha"><span class="nome">Bolo gelado</span><span class="pont"></span><span class="preco"><small>R$</small>10</span></div></li>
+    </ul>
+    <p class="sec-nota anim">Temos mais doces todos os dias. Pergunte as opções de hoje.</p>
+  </section>
+
+  <section id="bebidas">
+    <div class="sec-cab anim"><h2>Bebidas</h2></div>
+    <div class="faixa anim"><img src="img/ilustrativas/refrigerante.jpg" alt="" loading="lazy"><span>Sem álcool</span><b class="tag">ilustrativa</b></div>
+    <ul class="lista simples">
+      <li class="anim"><div class="linha"><span class="nome">Água sem gás</span><span class="pont"></span><span class="preco"><small>R$</small>4</span></div></li>
+      <li class="anim"><div class="linha"><span class="nome">Água com gás</span><span class="pont"></span><span class="preco"><small>R$</small>5</span></div></li>
+      <li class="anim"><div class="linha"><span class="nome">Refrigerante lata</span><span class="pont"></span><span class="preco"><small>R$</small>7</span></div></li>
+      <li class="anim"><div class="linha"><span class="nome">Refrigerante 1 L</span><span class="pont"></span><span class="preco"><small>R$</small>12</span></div></li>
+      <li class="anim"><div class="linha"><span class="nome">Refrigerante 2 L</span><span class="pont"></span><span class="preco"><small>R$</small>16</span></div></li>
+    </ul>
+    <div class="faixa anim"><img src="img/ilustrativas/cerveja.jpg" alt="" loading="lazy"><span>Cervejas</span><b class="tag">ilustrativa</b></div>
+    <ul class="lista simples">
+      <li class="anim"><div class="linha"><span class="nome">Cerveja lata</span><span class="pont"></span><span class="preco"><small>R$</small>7</span></div></li>
+      <li class="anim"><div class="linha"><span class="nome">Cerveja lata zero</span><span class="pont"></span><span class="preco"><small>R$</small>8</span></div></li>
+      <li class="anim"><div class="linha"><span class="nome">Long neck</span><span class="pont"></span><span class="preco"><small>R$</small>12</span></div></li>
+      <li class="anim"><div class="linha"><span class="nome">Litrão<em>Antarctica, Skol, Brahma</em></span><span class="pont"></span><span class="preco"><small>R$</small>14</span></div></li>
+      <li class="anim"><div class="linha"><span class="nome">Cerveja 600 ml</span><span class="pont"></span><span class="preco"><small>R$</small>17</span></div></li>
+      <li class="anim"><div class="linha"><span class="nome">Litrão<em>Original, Budweiser</em></span><span class="pont"></span><span class="preco"><small>R$</small>17</span></div></li>
+    </ul>
+  </section>
+
+  <section id="contato">
+    <div class="sec-cab anim"><h2>Onde estamos</h2></div>
+    <div class="contatos">
+      <div class="contato anim">
+        <h3>Endereço</h3>
+        <p>Avenida José Pavan, 100</p>
+        <p class="sub">Sítios de Recreio Independência · CEP 13606-050</p>
+        <a class="botao" href="https://www.google.com/maps/search/?api=1&amp;query=Avenida%20Jos%C3%A9%20Pavan%2C%20100%2C%2013606-050" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
+          Abrir no mapa
+        </a>
+      </div>
+      <div class="contato anim">
+        <h3>WhatsApp</h3>
+        <p>(19) 99738-4736</p>
+        <p class="sub">Peça para retirar ou tire suas dúvidas.</p>
+        <a class="botao verde" href="https://wa.me/5519997384736?text=Ol%C3%A1!%20Vim%20pelo%20card%C3%A1pio%20e%20quero%20fazer%20um%20pedido." target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l1.3-3.9A8 8 0 1 1 8 19.1z"/><path d="M9 9.5c0 2.8 2.7 5.5 5.5 5.5"/></svg>
+          Chamar no WhatsApp
+        </a>
+      </div>
+      <div class="contato anim">
+        <h3>Instagram</h3>
+        <p>@_luvillary</p>
+        <p class="sub">Novidades e doces do dia.</p>
+        <a class="botao" href="https://www.instagram.com/_luvillary/" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r=".6" fill="currentColor"/></svg>
+          Seguir no Instagram
+        </a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<a class="fab" id="fab" href="https://wa.me/5519997384736?text=Ol%C3%A1!%20Vim%20pelo%20card%C3%A1pio%20e%20quero%20fazer%20um%20pedido." target="_blank" rel="noopener" aria-label="Fazer pedido pelo WhatsApp">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l1.3-3.9A8 8 0 1 1 8 19.1z"/><path d="M9 9.5c0 2.8 2.7 5.5 5.5 5.5"/></svg>
+  Pedir
+</a>
+
+<footer><div class="rod">
+  <div><strong>Lu'Villary Sabores</strong>Obrigado pela preferência. Bom apetite!</div>
+  <details>
+    <summary>Créditos das imagens ilustrativas</summary>
+    <p>Fotos do Wikimedia Commons, recortadas e redimensionadas. Autor e licença de cada uma:</p>
+    <ul><li>Panceta no prato: Biser Todorov · <a href="https://commons.wikimedia.org/wiki/File:Pork_prrr.jpg" target="_blank" rel="noopener">CC BY 4.0</a></li>
+      <li>Contra filé: HaJunkiyada · <a href="https://commons.wikimedia.org/wiki/File:Liat_Portal_for_Foodie_Disorder_-_Sirloin_steak_with_Tu_B%E2%80%99Shvat_vegetables.jpg" target="_blank" rel="noopener">CC BY-SA 4.0</a></li>
+      <li>Tilápia: Ceeseven · <a href="https://commons.wikimedia.org/wiki/File:Fried_Fish_Fillet_with_Mayonnaise.jpg" target="_blank" rel="noopener">CC BY-SA 4.0</a></li>
+      <li>Bolinho de bacalhau: GostinhoDeBrasil · <a href="https://commons.wikimedia.org/wiki/File:Bolinho_de_bacalhau.jpg" target="_blank" rel="noopener">CC BY 3.0</a></li>
+      <li>Frango à passarinho: Christian Benseler · <a href="https://commons.wikimedia.org/wiki/File:Leitoa_e_frango_a_passarinho_(8468274761).jpg" target="_blank" rel="noopener">CC BY 2.0</a></li>
+      <li>Iscas de frango: FotoosVanRobin from Netherlands · <a href="https://commons.wikimedia.org/wiki/File:Crispy_Chicken_Strips_-_FotoosVanRobin.jpg" target="_blank" rel="noopener">CC BY-SA 2.0</a></li>
+      <li>Batata recheada: Vicente Eugenio · <a href="https://commons.wikimedia.org/wiki/File:Batata_recheada_do_Bigode_(6010594528).jpg" target="_blank" rel="noopener">CC BY 2.0</a></li>
+      <li>Calabresa: Daderot · <a href="https://commons.wikimedia.org/wiki/File:Sausage_with_garlic_and_cheese,_roasted_with_broccoli_and_plum_tomato,_on_sliced_potato,_with_raw_onion_-_Massachusetts.jpg" target="_blank" rel="noopener">CC0</a></li>
+      <li>Mandioca: Horacio Cambeiro · <a href="https://commons.wikimedia.org/wiki/File:Mandioca_frita_en_restaurante_de_Argentina.jpg" target="_blank" rel="noopener">CC BY-SA 3.0</a></li>
+      <li>Polenta: El Mono Espa&#241;ol · <a href="https://commons.wikimedia.org/wiki/File:Polenta_fritta_da_sgranocchiare.jpg" target="_blank" rel="noopener">CC BY-SA 4.0</a></li>
+      <li>Batata: Tony Webster from Minneapolis, Minnesota, United States · <a href="https://commons.wikimedia.org/wiki/File:Truffle_oil_french_fries_(33024792848).jpg" target="_blank" rel="noopener">CC BY-SA 2.0</a></li>
+      <li>Salgadinhos: Horacio Cambeiro · <a href="https://commons.wikimedia.org/wiki/File:Coxinha_de_Puerto_Iguaz%C3%BA,_Misiones,_Argentina.jpg" target="_blank" rel="noopener">CC BY 3.0</a></li>
+      <li>Café coado: Petr Kratochvil · <a href="https://commons.wikimedia.org/wiki/File:Coffee_cup_surrounded_by_coffee_beans.jpg" target="_blank" rel="noopener">CC0</a></li>
+      <li>Café com leite: pelican from Tokyo, Japan · <a href="https://commons.wikimedia.org/wiki/File:Beignet_and_Cafe_au_lait_(30116730573).jpg" target="_blank" rel="noopener">CC BY-SA 2.0</a></li>
+      <li>Achocolatado: stevepb · <a href="https://commons.wikimedia.org/wiki/File:Chocolate_milk.JPG" target="_blank" rel="noopener">CC0</a></li>
+      <li>Pão de queijo: Murilo manzini · <a href="https://commons.wikimedia.org/wiki/File:Cheesebread.jpg" target="_blank" rel="noopener">CC BY-SA 4.0</a></li>
+      <li>Presunto e queijo: City Foodsters · <a href="https://commons.wikimedia.org/wiki/File:Australia_Dairy_Company_-_Ham_and_Egg_Sandwich.jpg" target="_blank" rel="noopener">CC BY 2.0</a></li>
+      <li>Presunto, queijo e ovo: Kykk wiki · <a href="https://commons.wikimedia.org/wiki/File:Croque-madame_at_cafe_kocsi.jpg" target="_blank" rel="noopener">CC0</a></li>
+      <li>Requeijão e muçarela: Maggie Hoffman · <a href="https://commons.wikimedia.org/wiki/File:Grilled_cheese_sandwich.jpg" target="_blank" rel="noopener">CC BY 2.0</a></li>
+      <li>Suco de laranja: Agency of the United States Department of Agriculture Edited Version by: Arad · <a href="https://commons.wikimedia.org/wiki/File:Orange_juice_1_edit1.jpg" target="_blank" rel="noopener">Public domain</a></li>
+      <li>Suco de abacaxi: Srini297 · <a href="https://commons.wikimedia.org/wiki/File:Pineapple_Juice_in_Glass_Jar.jpg" target="_blank" rel="noopener">CC BY-SA 4.0</a></li>
+      <li>Bolo no pote: Sasipriya Subramani · <a href="https://commons.wikimedia.org/wiki/File:Mousse_jar_cake.jpg" target="_blank" rel="noopener">CC BY-SA 4.0</a></li>
+      <li>Pudim: Marcelo Tr&#228;sel from Porto Alegre, Brasil · <a href="https://commons.wikimedia.org/wiki/File:Pudim_de_leite_(3544235183).jpg" target="_blank" rel="noopener">CC BY-SA 2.0</a></li>
+      <li>Bolo gelado: Toby Oxborrow from Kowloon, Hong Kong · <a href="https://commons.wikimedia.org/wiki/File:A_slice_of_coconut_cake.jpg" target="_blank" rel="noopener">CC BY-SA 2.0</a></li>
+      <li>Refrigerantes: Wilfredor · <a href="https://commons.wikimedia.org/wiki/File:Soft_drink_shelf_2.jpg" target="_blank" rel="noopener">CC BY-SA 4.0</a></li>
+      <li>Cervejas: Public Domain Images · <a href="https://commons.wikimedia.org/wiki/File:Beer_in_glass_close_up.jpg" target="_blank" rel="noopener">Public domain</a></li></ul>
+  </details>
+</div></footer>
+
+<script>
+(function(){
+  var reduz = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var links = Array.prototype.slice.call(document.querySelectorAll('.nav a'));
+  var trilho = document.getElementById('trilho');
+  var pilula = document.getElementById('pilula');
+  var map = {}, atualId = null;
+  links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+
+  function moverPilula(a){
+    pilula.style.width = a.offsetWidth + 'px';
+    pilula.style.height = a.offsetHeight + 'px';
+    pilula.style.top = a.offsetTop + 'px';
+    pilula.style.transform = 'translateX(' + a.offsetLeft + 'px)';
+  }
+  function ativar(id){
+    if (id === atualId || !map[id]) return;
+    atualId = id;
+    links.forEach(function(a){ a.classList.toggle('ativo', a === map[id]); });
+    var a = map[id];
+    moverPilula(a);
+    trilho.scrollTo({left: a.offsetLeft - (trilho.clientWidth - a.offsetWidth) / 2, behavior: reduz ? 'auto' : 'smooth'});
+  }
+  links.forEach(function(a){
+    a.addEventListener('click', function(e){
+      e.preventDefault();
+      var id = a.getAttribute('href').slice(1);
+      var sec = document.getElementById(id);
+      if (sec) sec.scrollIntoView({behavior: reduz ? 'auto' : 'smooth', block: 'start'});
+      ativar(id);
+    });
+  });
+  window.addEventListener('resize', function(){ if (atualId) moverPilula(map[atualId]); });
+
+  var secoes = Array.prototype.slice.call(document.querySelectorAll('main section'));
+  var fundo = document.getElementById('fundo');
+  var capaInner = document.getElementById('capa-inner');
+  var capa = document.querySelector('.capa');
+  var fab = document.getElementById('fab');
+  function aoRolar(){
+    var y = window.scrollY || 0;
+    if (!reduz) {
+      var h = capa.offsetHeight;
+      if (y < h + 50) {
+        fundo.style.transform = 'translateY(' + (y * 0.35) + 'px) scale(' + (1 + y / 3000) + ')';
+        capaInner.style.transform = 'translateY(' + (y * 0.18) + 'px)';
+        capaInner.style.opacity = Math.max(0, 1 - y / (h * 0.9));
+      }
+    }
+    var atual = secoes[0].id;
+    secoes.forEach(function(s){ if (s.getBoundingClientRect().top - 110 <= 0) atual = s.id; });
+    if ((window.innerHeight + y) >= document.documentElement.scrollHeight - 4) atual = secoes[secoes.length-1].id;
+    ativar(atual);
+    // esconde o botão flutuante quando o bloco "Onde estamos" já mostra o WhatsApp
+    var contato = document.getElementById('contato');
+    if (fab && contato) fab.classList.toggle('oculto', contato.getBoundingClientRect().top < window.innerHeight * 0.75);
+  }
+  var pendente = false;
+  window.addEventListener('scroll', function(){ if(!pendente){ pendente = true; requestAnimationFrame(function(){ pendente = false; aoRolar(); }); } }, {passive:true});
+
+  // Entrada ao rolar: só esconde o que ainda está abaixo da tela; o que já aparece fica visível.
+  if (!reduz && 'IntersectionObserver' in window) {
+    var itens = Array.prototype.slice.call(document.querySelectorAll('.anim'));
+    var limite = window.innerHeight;
+    var grupo = new Map();
+    itens.forEach(function(el){
+      if (el.getBoundingClientRect().top < limite) return;
+      var pai = el.parentElement, i = grupo.get(pai) || 0;
+      grupo.set(pai, i + 1);
+      el.style.setProperty('--d', Math.min(i, 6) * 0.07 + 's');
+      el.classList.add('pre');
+    });
+    var io = new IntersectionObserver(function(entradas){
+      entradas.forEach(function(en){
+        if (en.isIntersecting) { en.target.classList.remove('pre'); io.unobserve(en.target); }
+      });
+    }, {rootMargin: '0px 0px -8% 0px', threshold: 0.12});
+    itens.forEach(function(el){ if (el.classList.contains('pre')) io.observe(el); });
+  }
+  aoRolar();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ if (atualId) moverPilula(map[atualId]); });
+})();
+</script>
+
+</html>
